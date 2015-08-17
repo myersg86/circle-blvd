@@ -153,6 +153,11 @@ function TopLevelCtrl(session, lib, $scope, $http, $location, $route, $window, $
 			$scope.$broadcast('keyClearStatus', e);
 		}
 
+		if (e.keyCode === 84) {
+			// T
+			$scope.$broadcast('keyTakeOwnership', e);
+		}
+
 		// Scrolling: page up, page down, end, home
 		if (e.keyCode === 33
 			|| e.keyCode === 34
@@ -379,7 +384,7 @@ function TopLevelCtrl(session, lib, $scope, $http, $location, $route, $window, $
 			|| path === '/tips'
 			|| path === '/tour'
 			|| path.indexOf('/tour') === 0
-			|| path === '/sponsor'
+			|| path === '/partner'
 			|| path === '/donate'
 			|| path === '/about'
 			|| path === '/contact'

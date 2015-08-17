@@ -749,6 +749,11 @@ function StoryListCtrl($scope, $timeout, $http, $location, $route, $document, $i
 		$scope.markHighlightedAs('');
 	});
 
+	$scope.$on('keyTakeOwnership', function (e) {
+		var owner = $scope.accountName; 
+		$scope.setOwnerForHighlighted(owner);
+	});
+
 	$scope.$on('mouseDown', function (e) {
 
 	});
@@ -803,6 +808,31 @@ function StoryListCtrl($scope, $timeout, $http, $location, $route, $document, $i
 			if (story.status !== newStatus) {
 				story.status = newStatus;
 				$scope.$emit('storyChanged', story);
+			}
+		});
+	};
+
+	$scope.setOwnerForHighlighted = function (owner) {
+		highlightedStories.forEach(function (story) {
+			if (story.isDeadline || story.isNextMeeting) {
+				return;
+			}
+
+			// Only emit a changed event if we have to.
+			if (story.owner !== owner) {
+				story.owner = owner;
+				if (!story.status) {
+					story.status = "assigned";
+				}
+				$scope.$emit('storyChanged', story);
+			}
+			else {
+				// We already own it. In that case, mark it
+				// as assigned
+				if (!story.status) {
+					story.status = "assigned";
+					$scope.$emit('storyChanged', story);
+				}
 			}
 		});
 	};
